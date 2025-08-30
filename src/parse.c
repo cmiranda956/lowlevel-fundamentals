@@ -22,21 +22,48 @@ int output_file(int fd, struct dbheader_t *dbhdr,
 
 int validate_db_header(int fd, struct dbheader_t **headerOut) {
     if(fd < 0) {
-        printf("bad fild descriptor received from main");
+        printf("bad file descriptor received from main");
         return STATUS_ERROR;
     }
-    struct dbheader *header = calloc(1, sizeof(struct dbheader_t));
+    struct dbheader_t *header = calloc(1, sizeof(struct dbheader_t));
     if(header == -1) {
         printf("calloc failed to create dbheader validator.\n");
         return STATUS_ERROR;
     }
-    // TODO : finish function
-    read();
+    if(read(fd, header, sizeof(struct dbheader_t)) != sizeof(struct dbheader_t)) {
+        perror("read");
+        free(header);
+        return STATUS_ERROR;
+    }
+
+    header->version = ntohs(header->version);
+    header->count = ntohs(header->count);
+    header->magic = ntohl(header->magic);
+    header->filesize = sizeof(struct dbheader_t);
+    
+    if(header->version != 1) {
+        printf("improper header version\n");
+        free(header);
+        return STATUS_ERROR;
+    }
+    if(header->magic != 1) {
+        printf("improper header magic value\n");
+        free(header);
+        return STATUS_ERROR;
+    }
+
+    struct stat dbstat = {0};
+    fstat(fd, &dbstat);
+    if(header->filesize != dbstat.st_size) {
+        printf("corrupted database\n");
+        free(header);
+        return STATUS_ERROR;
+    }
 }
 
 // returns a status and not a value
 int create_db_header(int fd, struct dbheader_t **headerOut) {
-    struct dbheader *header = calloc(1, sizeof(struct dbheader_t));
+    struct dbheader_t *header = calloc(1, sizeof(struct dbheader_t));
     if(header == -1) {
         printf("calloc failed to create dbheader.\n");
         return STATUS_ERROR;

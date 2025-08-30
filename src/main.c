@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
         return STATUS_ERROR;
     }
 
-    while ((option = getopt(argc, argv, "enf:")) != -1) {
+    while ((option = getopt(argc, argv, "nef:")) != -1) {
         switch (option) {
             case 'n':
                 new_file = true;
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
             printf("Database could not be created.\n");
             return STATUS_ERROR;
         }
-        if(create_db_header(dbfc, &dbheader) != STATUS_SUCCESS) {
+        if(create_db_header(dbfd, &dbheader) != STATUS_SUCCESS) {
             printf("Database header could not be created.\n");
             return STATUS_ERROR;
         }
@@ -60,6 +60,10 @@ int main(int argc, char *argv[]) {
         dbfd = open_db_file(filepath);
         if(dbfd == STATUS_ERROR) {
             printf("Database could not be opened.\n");
+            return STATUS_ERROR;
+        }
+        if(validate_db_header(dbfd, &dbheader) != STATUS_SUCCESS) {
+            printf("failed to validate database header\n");
             return STATUS_ERROR;
         }
     }
