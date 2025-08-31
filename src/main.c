@@ -21,7 +21,8 @@ int main(int argc, char *argv[]) {
     int dbfd = -1;
     char *filepath = NULL;
     bool new_file = false;
-    struct dbheader_t dbheader = {0};
+    struct dbheader_t *dbheader = {0};
+    struct employee_t *employee = {0};
 
     if(argc < 2) {
         print_usage(argv);
@@ -67,4 +68,5 @@ int main(int argc, char *argv[]) {
             return STATUS_ERROR;
         }
     }
+    output_file(dbfd, dbheader, &employee);
 }
