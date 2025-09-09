@@ -24,7 +24,6 @@ int add_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char *a
     char *name = strtok(addstring, ",");
     char *address = strtok(NULL, ",");
     char *hours = strtok(NULL, ",");
-    printf("%s %s %s\n", name, address, hours);
 
     strncpy(employees[dbhdr->count - 1].name, name, sizeof(employees[dbhdr->count - 1].name));
     strncpy(employees[dbhdr->count - 1].address, address, sizeof(employees[dbhdr->count - 1].address));
@@ -48,7 +47,7 @@ int read_employees(int fd, struct dbheader_t *dbhdr, struct employee_t **employe
         return STATUS_ERROR;
     }
     
-    read(fd, employees, count * sizeof(struct employee_t));
+    read(fd, employees, (count * sizeof(struct employee_t)));
 
     for(int i = 0; i < count; i++) {
         employees[i].hours = ntohl(employees[i].hours);
@@ -69,7 +68,8 @@ int output_file(int fd, struct dbheader_t *dbhdr, struct employee_t *employees) 
     dbhdr->version = htons(dbhdr->version);
     dbhdr->count = htons(dbhdr->count);
     dbhdr->magic = htonl(dbhdr->magic);
-    dbhdr->filesize = htonl(sizeof(struct dbheader_t) + (sizeof(struct employee_t) * count));
+    dbhdr->filesize = htonl((sizeof(struct dbheader_t) + (sizeof(struct employee_t) * count)));
+
     lseek(fd, 0, SEEK_SET);
     write(fd, dbhdr, sizeof(struct dbheader_t));
 
