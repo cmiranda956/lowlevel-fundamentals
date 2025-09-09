@@ -9,13 +9,37 @@
 #include "common.h"
 #include "parse.h"
 
+/*****************************************
+ * NOTES:
+ *
+ * Memory endian-ess
+ *  - host is readable by the program, and what we program to test against
+ *  - network is how it is stored on disk
+ *
+ ******************************************/
+
 void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {}
 
 int add_employee(struct dbheader_t *dbhdr, struct employee_t *employees,
         char *addstring) {}
 
-int read_employees(int fd, struct dbheader_t *dbhdr,
-        struct employee_t **employeesOut) {}
+int read_employees(int fd, struct dbheader_t *dbhdr, struct employee_t **employeesOut) {
+    if(fd < 1) {
+        printf("bad FD from the user in read_employees");
+        return STATUS_ERROR;
+    }
+
+    int count = dbhdr->count;
+
+    struct employee_t *employees = calloc(count, sizeof(struct employee_t));
+
+    if(employee == -1) {
+        print("read_employees: calloc failed");
+        return STATUS_ERROR;
+    }
+    
+    read(fd, employees, count * sizeof(struct employee_t));
+}
 
 int output_file(int fd, struct dbheader_t *dbhdr, struct employee_t *employees) {
     if(fd < 0) {
