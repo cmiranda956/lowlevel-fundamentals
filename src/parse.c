@@ -77,7 +77,7 @@ int validate_db_header(int fd, struct dbheader_t **headerOut) {
 }
 
 // returns a status and not a value
-int create_db_header(int fd, struct dbheader_t **headerOut) {
+int create_db_header(struct dbheader_t **headerOut) {
     struct dbheader_t *header = calloc(1, sizeof(struct dbheader_t));
     if(header == -1) {
         printf("calloc failed to create dbheader.\n");
