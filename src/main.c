@@ -80,12 +80,13 @@ int main(int argc, char *argv[]) {
 
     if(addstring) {
         dbheader->count++;
-        realloc(employees, dbheader->count * sizeof(struct employee_t));
+        employees = realloc(employees, dbheader->count * sizeof(struct employee_t));
 
         if(add_employee(dbheader, employees, addstring) != STATUS_SUCCESS) {
             printf("failed to add employee");
             return STATUS_ERROR;
         }
     }
-    output_file(dbfd, dbheader, &employees);
+
+    output_file(dbfd, dbheader, employees);
 }

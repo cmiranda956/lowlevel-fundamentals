@@ -64,13 +64,19 @@ int output_file(int fd, struct dbheader_t *dbhdr, struct employee_t *employees) 
         printf("func: output_file:: bad file descriptor provided.");
         return STATUS_ERROR;
     }
+    int count = dbhdr->count;
 
     dbhdr->version = htons(dbhdr->version);
     dbhdr->count = htons(dbhdr->count);
     dbhdr->magic = htonl(dbhdr->magic);
-    dbhdr->filesize = htonl(dbhdr->filesize);
+    dbhdr->filesize = htonl(sizeof(struct dbheader_t) + (sizeof(struct employee_t) * count));
     lseek(fd, 0, SEEK_SET);
     write(fd, dbhdr, sizeof(struct dbheader_t));
+
+    for(int i = 0; i < count; i++) {
+        employees[i].hours = htonl(employees[i].hours);
+        write(fd, &employees[i], sizeof(struct employee_t));
+    }
 
     return STATUS_SUCCESS;
 }
@@ -94,7 +100,7 @@ int validate_db_header(int fd, struct dbheader_t **headerOut) {
     header->version = ntohs(header->version);
     header->count = ntohs(header->count);
     header->magic = ntohl(header->magic);
-    header->filesize = sizeof(struct dbheader_t);
+    header->filesize = ntohl(header->filesize);
 
     if(header->version != 1) {
         printf("improper header version\n");
