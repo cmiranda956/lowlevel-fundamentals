@@ -20,7 +20,9 @@ int main(int argc, char *argv[]) {
     int option;
     int dbfd = -1;
     char *filepath = NULL;
+    char *addstring = NULL;
     bool new_file = false;
+
     struct dbheader_t *dbheader = {0};
     struct employee_t *employees = {0};
 
@@ -29,7 +31,7 @@ int main(int argc, char *argv[]) {
         return STATUS_ERROR;
     }
 
-    while ((option = getopt(argc, argv, "nef:")) != -1) {
+    while ((option = getopt(argc, argv, "na:ef:")) != -1) {
         switch (option) {
             case 'n':
                 new_file = true;
@@ -75,5 +77,15 @@ int main(int argc, char *argv[]) {
         printf("failed to read employees");
         return STATUS_ERROR;
     }
-    output_file(dbfd, dbheader, &employee);
+
+    if(addstring) {
+        dbheader->count++;
+        realloc(employees, dbheader->count * sizeof(struct employee_t));
+
+        if(add_employee(dbheader, employees, addstring) != STATUS_SUCCESS) {
+            printf("failed to add employee");
+            return STATUS_ERROR;
+        }
+    }
+    output_file(dbfd, dbheader, &employees);
 }

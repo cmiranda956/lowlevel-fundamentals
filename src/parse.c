@@ -20,7 +20,18 @@
 
 void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {}
 
-int add_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char *addstring) {}
+int add_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char *addstring) {
+    char *name = strtok(addstring, ",");
+    char *address = strtok(NULL, ",");
+    char *hours = strtok(NULL, ",");
+    printf("%s %s %s\n", name, address, hours);
+
+    strncpy(employees[dbhdr->count - 1].name, name, sizeof(employees[dbhdr->count - 1].name));
+    strncpy(employees[dbhdr->count - 1].address, address, sizeof(employees[dbhdr->count - 1].address));
+    employees[dbhdr->count - 1].hours = atoi(hours);
+
+    return STATUS_SUCCESS;
+}
 
 int read_employees(int fd, struct dbheader_t *dbhdr, struct employee_t **employeesOut) {
     if(fd < 1) {
@@ -32,8 +43,8 @@ int read_employees(int fd, struct dbheader_t *dbhdr, struct employee_t **employe
 
     struct employee_t *employees = calloc(count, sizeof(struct employee_t));
 
-    if(employee == -1) {
-        print("read_employees: calloc failed");
+    if(employees == -1) {
+        printf("read_employees: calloc failed");
         return STATUS_ERROR;
     }
     
