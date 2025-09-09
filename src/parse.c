@@ -27,7 +27,6 @@ int output_file(int fd, struct dbheader_t *dbhdr, struct employee_t *employees) 
     dbhdr->count = htons(dbhdr->count);
     dbhdr->magic = htonl(dbhdr->magic);
     dbhdr->filesize = htonl(dbhdr->filesize);
-
     lseek(fd, 0, SEEK_SET);
     write(fd, dbhdr, sizeof(struct dbheader_t));
 
