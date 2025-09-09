@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     char *filepath = NULL;
     bool new_file = false;
     struct dbheader_t *dbheader = {0};
-    struct employee_t *employee = {0};
+    struct employee_t *employees = {0};
 
     if(argc < 2) {
         print_usage(argv);
@@ -36,6 +36,9 @@ int main(int argc, char *argv[]) {
                 break;
             case 'e':
                 return 0;
+                break;
+            case 'a':
+                addstring = optarg;
                 break;
             case 'f':
                 filepath = optarg;
@@ -67,6 +70,10 @@ int main(int argc, char *argv[]) {
             printf("failed to validate database header\n");
             return STATUS_ERROR;
         }
+    }
+    if(read_employees(dbfd, dbheader, &employees) != STATUS_SUCCESS) {
+        printf("failed to read employees");
+        return STATUS_ERROR;
     }
     output_file(dbfd, dbheader, &employee);
 }

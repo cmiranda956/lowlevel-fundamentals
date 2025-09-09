@@ -20,8 +20,7 @@
 
 void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {}
 
-int add_employee(struct dbheader_t *dbhdr, struct employee_t *employees,
-        char *addstring) {}
+int add_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char *addstring) {}
 
 int read_employees(int fd, struct dbheader_t *dbhdr, struct employee_t **employeesOut) {
     if(fd < 1) {
@@ -39,6 +38,14 @@ int read_employees(int fd, struct dbheader_t *dbhdr, struct employee_t **employe
     }
     
     read(fd, employees, count * sizeof(struct employee_t));
+
+    for(int i = 0; i < count; i++) {
+        employees[i].hours = ntohl(employees[i].hours);
+    }
+
+    *employeesOut = employees;
+
+    return STATUS_SUCCESS;
 }
 
 int output_file(int fd, struct dbheader_t *dbhdr, struct employee_t *employees) {
