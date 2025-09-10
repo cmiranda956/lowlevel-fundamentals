@@ -44,8 +44,8 @@ int add_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char *a
     char *addr= strtok(NULL, ",");
     char *hours = strtok(NULL, ",");
     if(name == NULL || addr == NULL || hours == NULL) {
-        printf("USAGE: Name,Address,Hours");
-        return STATUS_SUCCESS;
+        printf("USAGE: Name,Address,Hours\n");
+        return STATUS_ERROR;
     }
 
     strncpy(employees[dbhdr->count - 1].name, name, sizeof(employees[dbhdr->count - 1].name));

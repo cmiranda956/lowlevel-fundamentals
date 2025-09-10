@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
         dbheader->count++;
         employees = realloc(employees, dbheader->count*(sizeof(struct employee_t)));
         if(add_employee(dbheader, employees, addstring) != STATUS_SUCCESS) {
-            printf("failed to add employee");
+            printf("failed to add employee\n");
             return STATUS_ERROR;
         }
     }
