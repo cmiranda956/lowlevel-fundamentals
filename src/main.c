@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
             printf("Database could not be created.\n");
             return STATUS_ERROR;
         }
-        if(create_db_header(&dbheader) != STATUS_SUCCESS) {
+        if(create_db_header(dbfd, &dbheader) != STATUS_SUCCESS) {
             printf("Database header could not be created.\n");
             return STATUS_ERROR;
         }
