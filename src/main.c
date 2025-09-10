@@ -22,6 +22,7 @@ int main(int argc, char *argv[]) {
     char *filepath = NULL;
     char *addstring = NULL;
     bool new_file = false;
+    bool list = false;
 
     struct dbheader_t *dbheader = NULL;
     struct employee_t *employees = NULL;
@@ -31,7 +32,7 @@ int main(int argc, char *argv[]) {
         return STATUS_ERROR;
     }
 
-    while ((option = getopt(argc, argv, "na:ef:")) != -1) {
+    while ((option = getopt(argc, argv, "na:ef:l")) != -1) {
         switch (option) {
             case 'n':
                 new_file = true;
@@ -44,6 +45,9 @@ int main(int argc, char *argv[]) {
                 break;
             case 'f':
                 filepath = optarg;
+                break;
+            case 'l':
+                list = true;
                 break;
             case '?':
                 print_usage(argv);
@@ -81,11 +85,14 @@ int main(int argc, char *argv[]) {
     if(addstring) {
         dbheader->count++;
         employees = realloc(employees, dbheader->count*(sizeof(struct employee_t)));
-        // if(add_employee(dbheader, employees, addstring) != STATUS_SUCCESS) {
-        //     printf("failed to add employee");
-        //     return STATUS_ERROR;
-        // }
-        add_employee(dbheader, employees, addstring);
+        if(add_employee(dbheader, employees, addstring) != STATUS_SUCCESS) {
+            printf("failed to add employee");
+            return STATUS_ERROR;
+        }
+    }
+
+    if(list) {
+        list_employees(dbheader, employees);
     }
 
     output_file(dbfd, dbheader, employees);
