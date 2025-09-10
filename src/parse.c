@@ -28,8 +28,16 @@ void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
 }
 
 int add_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char *addstring) {
-    if(addstring == NULL || addstring == "") {
+    if(addstring == NULL) {
         printf("missing string argument from user");
+        return STATUS_ERROR;
+    }
+    if(dbhdr == NULL) {
+        printf("null dbhdr pointer received from main");
+        return STATUS_ERROR;
+    }
+    if(employees == NULL) {
+        printf("null employees pointer received from main");
         return STATUS_ERROR;
     }
     char *name = strtok(addstring, ",");
