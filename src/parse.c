@@ -28,7 +28,7 @@ void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
 }
 
 int add_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char *addstring) {
-    if(addstring == NULL) {
+    if(addstring == NULL || addstring == "") {
         printf("missing string argument from user");
         return STATUS_ERROR;
     }
