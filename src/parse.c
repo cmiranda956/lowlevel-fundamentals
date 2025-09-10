@@ -40,6 +40,7 @@ int add_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char *a
         printf("null employees pointer received from main");
         return STATUS_ERROR;
     }
+
     char *name = strtok(addstring, ",");
     char *addr= strtok(NULL, ",");
     char *hours = strtok(NULL, ",");
