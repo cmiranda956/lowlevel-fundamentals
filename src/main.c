@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
             printf("Database could not be created.\n");
             return STATUS_ERROR;
         }
-        if(create_db_header(dbfd, &dbheader) != STATUS_SUCCESS) {
+        if(create_db_header(&dbheader) != STATUS_SUCCESS) {
             printf("Database header could not be created.\n");
             return STATUS_ERROR;
         }
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
     if(addstring) {
         dbheader->count++;
         employees = realloc(employees, dbheader->count*(sizeof(struct employee_t)));
-        if(add_employee(dbheader, employees, addstring) != STATUS_SUCCESS) {
+        if(add_employee(dbheader, &employees, addstring) != STATUS_SUCCESS) {
             printf("failed to add employee\n");
             return STATUS_ERROR;
         }
