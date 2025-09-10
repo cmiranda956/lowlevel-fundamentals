@@ -23,8 +23,8 @@ int main(int argc, char *argv[]) {
     char *addstring = NULL;
     bool new_file = false;
 
-    struct dbheader_t *dbheader = {0};
-    struct employee_t *employees = {0};
+    struct dbheader_t *dbheader = NULL;
+    struct employee_t *employees = NULL;
 
     if(argc < 2) {
         print_usage(argv);
