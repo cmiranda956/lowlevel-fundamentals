@@ -28,22 +28,25 @@ void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
 }
 
 int add_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char *addstring) {
-    if(!addstring) {
+    if(addstring == NULL) {
         printf("missing string argument from user");
         return STATUS_ERROR;
     }
-    if(!dbhdr) {
+    if(dbhdr == NULL) {
         printf("null dbhdr pointer received from main");
         return STATUS_ERROR;
     }
-    if(!employees) {
+    if(employees == NULL) {
         printf("null employees pointer received from main");
         return STATUS_ERROR;
     }
-    printf("addstring: %s\n", addstring);
     char *name = strtok(addstring, ",");
     char *addr= strtok(NULL, ",");
     char *hours = strtok(NULL, ",");
+    if(name == NULL || addr == NULL || hours == NULL) {
+        printf("USAGE: Name,Address,Hours");
+        return STATUS_SUCCESS;
+    }
 
     strncpy(employees[dbhdr->count - 1].name, name, sizeof(employees[dbhdr->count - 1].name));
     strncpy(employees[dbhdr->count - 1].address, addr, sizeof(employees[dbhdr->count - 1].address));
