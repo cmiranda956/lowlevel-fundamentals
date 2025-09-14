@@ -20,22 +20,16 @@ void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
 }
 
 int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *addstring) {
-	printf("%s\n", addstring);
-
 	char *name = strtok(addstring, ",");
-
 	char *addr = strtok(NULL, ",");
-
 	char *hours = strtok(NULL, ",");
-
-	printf("%s %s %s\n", name, addr, hours);
-
-	
-	strncpy(employees[dbhdr->count-1].name, name, sizeof(employees[dbhdr->count-1].name));
-	strncpy(employees[dbhdr->count-1].address, addr, sizeof(employees[dbhdr->count-1].address));
-
-	employees[dbhdr->count-1].hours = atoi(hours);
-	
+    
+    printf("dbheader count in add_employee: %d\n", dbhdr->count);
+    // accessing struct directly with . notation. pointers to structs use arrow ->	
+	strncpy(employees[dbhdr->count - 1]->name, name, sizeof(employees[dbhdr->count-1]->name));
+    // failing at address
+	strncpy(employees[dbhdr->count - 1]->address, addr, sizeof(employees[dbhdr->count-1]->address));
+	employees[dbhdr->count-1]->hours = atoi(hours);
 
 	return STATUS_SUCCESS;
 }
@@ -154,7 +148,7 @@ int create_db_header(struct dbheader_t **headerOut) {
 	header->count = 0;
 	header->magic = HEADER_MAGIC;
 	header->filesize = sizeof(struct dbheader_t);
-
+    
 	*headerOut = header;
 
 	return STATUS_SUCCESS;
