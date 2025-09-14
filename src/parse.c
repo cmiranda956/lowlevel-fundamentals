@@ -19,17 +19,20 @@ void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
     }
 }
 
-int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *addstring) {
+int add_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char *addstring) {
+    if(addstring == NULL) {
+        printf("missing addstring value in add_employee\n");
+        return STATUS_ERROR;
+    }
 	char *name = strtok(addstring, ",");
 	char *addr = strtok(NULL, ",");
 	char *hours = strtok(NULL, ",");
     
-    printf("dbheader count in add_employee: %d\n", dbhdr->count);
     // accessing struct directly with . notation. pointers to structs use arrow ->	
-	strncpy(employees[dbhdr->count - 1]->name, name, sizeof(employees[dbhdr->count-1]->name));
+	strncpy(employees[dbhdr->count - 1].name, name, sizeof(employees[dbhdr->count-1].name));
     // failing at address
-	strncpy(employees[dbhdr->count - 1]->address, addr, sizeof(employees[dbhdr->count-1]->address));
-	employees[dbhdr->count-1]->hours = atoi(hours);
+	strncpy(employees[dbhdr->count - 1].address, addr, sizeof(employees[dbhdr->count-1].address));
+	employees[dbhdr->count-1].hours = atoi(hours);
 
 	return STATUS_SUCCESS;
 }
