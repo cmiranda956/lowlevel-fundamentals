@@ -29,7 +29,7 @@ int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *
 	char *hours = strtok(NULL, ",");
     if(name == NULL || addr == NULL || hours == NULL) {
         printf("Incorrectly formatted addstring provided");
-        return STAUS_ERROR;
+        return STATUS_ERROR;
     }
 
     struct employee_t tmp;
