@@ -27,6 +27,11 @@ int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *
 	char *name = strtok(addstring, ",");
 	char *addr = strtok(NULL, ",");
 	char *hours = strtok(NULL, ",");
+    if(name == NULL || addr == NULL || hours == NULL) {
+        printf("Incorrectly formatted addstring provided");
+        return STAUS_ERROR;
+    }
+
     struct employee_t tmp;
     // accessing struct directly with . notation. pointers to structs use arrow ->
 	strncpy((*employees + dbhdr->count - 1)->name, name, sizeof(tmp.name));
