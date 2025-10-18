@@ -27,7 +27,7 @@ int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *
 	char *name = strtok(addstring, ",");
 	char *addr = strtok(NULL, ",");
 	char *hours = strtok(NULL, ",");
-    if(name == NULL || addr == NULL || hours == NULL) {
+    if(name == NULL || name == "" || addr == NULL || addr == "" || hours == NULL || hours == "") {
         printf("Incorrectly formatted addstring provided");
         return STATUS_ERROR;
     }
