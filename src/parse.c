@@ -33,6 +33,7 @@ int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *
     }
 
     struct employee_t tmp;
+    printf("Count %d\n", dbhdr->count);
     // accessing struct directly with . notation. pointers to structs use arrow ->
 	strncpy((*employees + dbhdr->count - 1)->name, name, sizeof(tmp.name));
     // failing at address
@@ -59,8 +60,7 @@ int read_employees(int fd, struct dbheader_t *dbhdr, struct employee_t **employe
 
 	read(fd, employees, count*sizeof(struct employee_t));
 
-	int i = 0;
-	for (; i < count; i++) {
+	for (int i = 0; i < count; i++) {
 		employees[i].hours = ntohl(employees[i].hours);
 	}
 
@@ -87,8 +87,7 @@ int output_file(int fd, struct dbheader_t *dbhdr, struct employee_t *employees) 
 
 	write(fd, dbhdr, sizeof(struct dbheader_t));
 
-	int i = 0;
-	for (; i < realcount; i++) {
+	for (int i = 0; i < realcount; i++) {
 		employees[i].hours = htonl(employees[i].hours);
 		write(fd, &employees[i], sizeof(struct employee_t));
 	}
