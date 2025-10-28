@@ -32,14 +32,16 @@ int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *
         return STATUS_ERROR;
     }
 
-    struct employee_t tmp;
-    printf("Count %d\n", dbhdr->count);
-    // accessing struct directly with . notation. pointers to structs use arrow ->
-	strncpy((*employees + dbhdr->count - 1)->name, name, sizeof(tmp.name));
-    // failing at address
-	strncpy((*employees + dbhdr->count - 1)->address, addr, sizeof(tmp.address));
+    struct employee_t *e = *employees; 
+    e = realloc(e, sizeof(struct employee_t) * dbhdr->count + 1);
+    if(e == NULL) {
+        return STATUS_ERROR;
+    }
+    dbhdr->count++;
+	strncpy(e[dbhdr->count - 1].name, name, sizeof(e[dbhdr->count - 1].name));
+	strncpy(e[dbhdr->count - 1].address, addr, sizeof(e[dbhdr->count - 1].address));
 	(*employees + dbhdr->count - 1)->hours = atoi(hours);
-
+    *employees = e;
 	return STATUS_SUCCESS;
 }
 
