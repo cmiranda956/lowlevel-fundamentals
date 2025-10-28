@@ -20,17 +20,19 @@ void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
 }
 
 int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *addstring) {
+    if(dbhdr == NULL) return STATUS_ERROR;
+    if(employees == NULL) return STATUS_ERROR;
+    if(*employees == NULL) return STATUS_ERROR;
     if(addstring == NULL) {
         printf("missing addstring value in add_employee\n");
         return STATUS_ERROR;
     }
 	char *name = strtok(addstring, ",");
+    if(name == NULL) return STATUS_ERROR;
 	char *addr = strtok(NULL, ",");
+    if(addr == NULL) return STATUS_ERROR;
 	char *hours = strtok(NULL, ",");
-    if(name == NULL || name == "" || addr == NULL || addr == "" || hours == NULL || hours == "") {
-        printf("Incorrectly formatted addstring provided\n");
-        return STATUS_ERROR;
-    }
+    if(hours == NULL) return STATUS_ERROR;
 
     struct employee_t *e = *employees; 
     e = realloc(e, sizeof(struct employee_t) * dbhdr->count + 1);
@@ -40,7 +42,7 @@ int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *
     dbhdr->count++;
 	strncpy(e[dbhdr->count - 1].name, name, sizeof(e[dbhdr->count - 1].name));
 	strncpy(e[dbhdr->count - 1].address, addr, sizeof(e[dbhdr->count - 1].address));
-	(*employees + dbhdr->count - 1)->hours = atoi(hours);
+	e[dbhdr->count - 1].hours = atoi(hours);
     *employees = e;
 	return STATUS_SUCCESS;
 }
