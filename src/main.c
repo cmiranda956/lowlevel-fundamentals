@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
         }
     }
     if(read_employees(dbfd, dbheader, &employees) != STATUS_SUCCESS) {
-        printf("failed to read employees");
+        printf("failed to read employees\n");
         return STATUS_ERROR;
     }
 
@@ -90,8 +90,11 @@ int main(int argc, char *argv[]) {
     }
 
     if(list) {
-        list_employees(dbheader, employees);
+        if(list_employees(dbheader, employees) != STATUS_SUCCESS) {
+            return STATUS_ERROR;
+        }
     }
 
     output_file(dbfd, dbheader, employees);
+    return 0;
 }
